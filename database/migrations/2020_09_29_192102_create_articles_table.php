@@ -18,8 +18,8 @@ class CreateArticlesTable extends Migration
             $table->unsignedBigInteger('categories_id');
             $table->string('title');
             $table->text('body');
-            $table->string('url', 255);
-            $table->integer('sort_order');
+            $table->string('url', 255)->nullable();
+            $table->integer('sort_order')->nullable();
             $table->timestamps();
         });
     }

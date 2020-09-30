@@ -44,8 +44,6 @@ $(document).ready(function () {
     });
 
 
-
-
     /*
      Popup Modal for editing content
      */
@@ -66,19 +64,20 @@ $(document).ready(function () {
             $.ajax({
                 method: "GET",
                 url: "wiki/content/"+contentId,
+                dataType: "json",
                 success:function(result) {
                     if (result.content_record){
                         var contentRecord = result.content_record,
                             categoryList = result.category_list;
 
-                        // console.log(contentRecord);
                         //Load the category dropdown list
                         var dropdown = $("#category_list"),
                             selected = false;
 
                         $.each(categoryList, function() {
                             selected = false;
-                            if (contentRecord.wiki_category_id == this.id){
+                            if (contentRecord.categories_id == this.id){
+                            // if (contentRecord.categories_id == categoryId){
                                 selected = true;
                             }
                             dropdown.append($("<option />")
@@ -86,6 +85,7 @@ $(document).ready(function () {
                                 .text(this.title)
                                 .prop('selected', selected));
                         });
+
 
                         $('#modal-title').html("Subject: " + contentRecord.title);
                         $('#content_title').val(contentRecord.title);
@@ -103,7 +103,7 @@ $(document).ready(function () {
         }else{
             var $dropdown = $("#category_list");
 
-            $('.modal-title').text('Add New Content');
+            $('.modal-title').text('Add New Article');
 
             $.ajax({
                 method: "GET",
@@ -140,7 +140,6 @@ $(document).ready(function () {
             categoryId = $('#category_list').val(),
             urlPath = "wiki/content";
 
-
         if (operation == 'edit_content'){
             method = 'PUT';
             urlPath = "wiki/content/"+contentId;
@@ -154,9 +153,8 @@ $(document).ready(function () {
                 category_id:  categoryId,
                 wiki_content:  content,
                 wiki_title:  contentTitle,
-                reference_url:  referenceUrl,
+                reference_url:  referenceUrl
             },
-            async: false,
             success:function(result) {
                 if (result.success) {
                     $('#content_' + contentId).html(content);
@@ -168,10 +166,7 @@ $(document).ready(function () {
             }
         });
 
-
-
     });
-
 
 
     /*
@@ -182,7 +177,7 @@ $(document).ready(function () {
         var categoryId = $(this).data('category_id');
 
         load_content( categoryId, null);
-//kmr stopped here. need to pass cat id to add new content to this cat
+    //kmr stopped here. need to pass cat id to add new content to this cat
         $('#category-id').val(categoryId);
     });
 

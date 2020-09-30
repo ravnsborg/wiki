@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
-use App\Models\Content;
+use App\Models\Article;
 use App\Models\Link;
 use Illuminate\Support\Facades\Log;
 
@@ -31,12 +31,12 @@ class HomeController extends Controller
     public function index()
     {
         $this->middleware('auth');
-        $content = new Content;
+        $content = new Article;
 
         return view('index', [
             'categoryList' => (new Category)->getList(),
             'content' => $content->getByCategoryId(1),
-            'links' => Link::all()->sortBy('label'),
+            'links' => Link::all()->sortBy('title'),
             'keywords' => $content->getKeywords(),
         ]);
     }
@@ -49,9 +49,10 @@ class HomeController extends Controller
     public function search(Request $request)
     {
         if ($request->has('category_id')){
-            $content = (new Content)->getByCategoryId($request->category_id);
+            $content = (new Article)->getByCategoryId($request->category_id);
+            Log::info(var_export($content, true));
         }elseif ($request->has('search_string')){
-            $content = (new Content)->getBySearchString($request->search_string);
+            $content = (new Article)->getBySearchString($request->search_string);
         }else{
             $content = null;
         }
@@ -62,7 +63,7 @@ class HomeController extends Controller
             $categoryUniqueListing = null;
         }
 
-        $view = view('content')->with('content', $content->sortBy('title'))->renderSections()['content'];
+        $view = view('articles')->with('content', $content->sortBy('title'))->renderSections()['content'];
 
 
         return response()->json(['html'=>$view, 'categoryList'=>$categoryUniqueListing]);

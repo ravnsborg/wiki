@@ -7,9 +7,9 @@ use Carbon\Carbon;
 
 class Category extends Model
 {
-    protected $table = 'wiki_category';
+    protected $table = 'categories';
 
-    protected $fillable = ['title', 'entity_id'];
+    protected $fillable = ['title', 'entities_id'];
 
     public function getList()
     {
@@ -26,6 +26,7 @@ class Category extends Model
         return $this->insertGetId(
             [
                 'title' => $title,
+                'entities_id' => 1,
                 'created_at' => Carbon::now()
             ]
         );
@@ -39,7 +40,7 @@ class Category extends Model
      */
     public function content()
     {
-        return $this->hasMany(Content::class, 'wiki_category_id');
+        return $this->hasMany(Article::class, 'categories_id');
     }
 
 }

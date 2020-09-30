@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ContentController;
+use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\ArticlesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,21 +34,21 @@ Auth::routes();
 // ->middleware('auth');
 Route::get('/', [HomeController::class, 'index']);
 Route::post('wiki/search', [HomeController::class, 'search']);
-Route::get('/wiki/content/{content}', [ContentController::class, 'show']);
+Route::get('/wiki/content/{content}', [ArticlesController::class, 'show']);
 
-//Load add new Content form
-Route::get('wiki/category', [ContentController::class, 'create']);
+//Load add new Article form
+Route::get('wiki/category', [ArticlesController::class, 'create']);
 
 //Store new category
-Route::post('wiki/category', [CategoryController::class, 'store']);
+Route::post('wiki/category', [CategoriesController::class, 'store']);
 
 //Add / Edit content
-Route::post('/wiki/content', [ContentController::class, 'store']);
-Route::put('/wiki/content/{id}', [ContentController::class, 'update']);
+Route::post('/wiki/content', [ArticlesController::class, 'store']);
+Route::put('/wiki/content/{id}', [ArticlesController::class, 'update']);
 
 
 //Remove content
-Route::delete('/wiki/content/{id}', [ContentController::class, 'destroy']);
+Route::delete('/wiki/content/{id}', [ArticlesController::class, 'destroy']);
 
 
 //Sandbox

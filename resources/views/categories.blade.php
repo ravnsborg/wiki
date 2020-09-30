@@ -1,5 +1,5 @@
 @extends('modals.add_category')
-@section('category_listings')
+@section('categories')
     <div class="card-left">
         <div
             data-toggle="modal"

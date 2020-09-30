@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\Content;
+use App\Models\Article;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Log;
+use Illuminate\Support\Facades\Log;
 
-class CategoryController extends Controller
+class CategoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -38,10 +38,10 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate([
-            'new_category_title' => 'required|unique:wiki_category,title',
-            'new_content_title' => 'required'
-        ]);
+//        request()->validate([
+//            'new_category_title' => 'required|unique:wiki_category,title',
+//            'new_content_title' => 'required'
+//        ]);
 
 //        $validator = Validator::make($request->all(), [
 //            'new_category_title' => 'required|unique:wiki_category,title',
@@ -59,11 +59,10 @@ class CategoryController extends Controller
         if ($categoryTitleExists) {
             flash("{$request->new_category_title} already exists and can't be readded")->error();
         } else {
-
             $newCategoryId = (new Category)->createAndReturnId($request->new_category_title);
 
             if ($newCategoryId) {
-                $emptyContentRec = (new Content)->create($newCategoryId, $request->new_content_title, $content);
+                $emptyContentRec = (new Article)->create($newCategoryId, $request->new_content_title, $content);
 
                 flash("New category {$request->new_category_title} created")->success();
             }

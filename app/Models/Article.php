@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
-class Content extends Model
+class Article extends Model
 {
-    protected $table = 'wiki_content';
+    protected $table = 'articles';
 
-    protected $fillable = ['wiki_category_id', 'title', 'body', 'sort_order'];
+    protected $fillable = ['categories_id', 'title', 'body', 'url', 'sort_order'];
 
     private $keywords = [
         '??--' => '-------------------------------------',
@@ -20,7 +20,7 @@ class Content extends Model
     {
         return $this->insert(
             [
-                'wiki_category_id' => $categoryId,
+                'categories_id' => $categoryId,
                 'title' => htmlentities($title),
                 'body' => htmlentities($this->convertKeywords($body)),
                 'url' => htmlentities($referenceUrl),
@@ -37,7 +37,7 @@ class Content extends Model
             'title' => htmlentities($title),
             'body' => htmlentities($this->convertKeywords($body)),
             'url' => htmlentities($referenceUrl),
-            'wiki_category_id' => htmlentities($categoryId),
+            'categories_id' => htmlentities($categoryId),
             'updated_at' => Carbon::now()
         ]);
 
@@ -57,16 +57,16 @@ class Content extends Model
     {
 
         return $this->select(
-            'wiki_content.id',
-            'wiki_content.title',
-            'wiki_content.wiki_category_id',
-            'wiki_content.body',
-            'wiki_content.url',
-            'wiki_content.updated_at',
-            'wiki_category.title AS wiki_category_title'
+            'articles.id',
+            'articles.title',
+            'articles.categories_id',
+            'articles.body',
+            'articles.url',
+            'articles.updated_at',
+            'categories.title AS wiki_category_title'
         )
-            ->join('wiki_category', 'wiki_category.id', '=', 'wiki_content.wiki_category_id')
-            ->where('wiki_category_id', $categoryId)
+            ->join('categories', 'categories.id', '=', 'articles.categories_id')
+            ->where('categories_id', $categoryId)
             ->get();
     }
 
@@ -81,17 +81,17 @@ class Content extends Model
     {
 
         return $this->select(
-            'wiki_content.id',
-            'wiki_content.title',
-            'wiki_content.wiki_category_id',
-            'wiki_content.body',
-            'wiki_content.url',
-            'wiki_content.updated_at',
-            'wiki_category.title AS wiki_category_title'
+            'articles.id',
+            'articles.title',
+            'articles.categories_id',
+            'articles.body',
+            'articles.url',
+            'articles.updated_at',
+            'categories.title AS wiki_category_title'
         )
-            ->join('wiki_category', 'wiki_category.id', '=', 'wiki_content.wiki_category_id')
-            ->where('wiki_content.body', 'LIKE', "%{$searchString}%")
-            ->orWhere('wiki_content.title', 'LIKE', "%{$searchString}%")
+            ->join('categories', 'categories.id', '=', 'articles.categories_id')
+            ->where('articles.body', 'LIKE', "%{$searchString}%")
+            ->orWhere('articles.title', 'LIKE', "%{$searchString}%")
             ->get();
     }
 
@@ -125,7 +125,7 @@ class Content extends Model
      */
     public function category()
     {
-        return $this->belongsTo(Category::class, 'wiki_category_id');
+        return $this->belongsTo(Category::class, 'categories_id');
     }
 
 
