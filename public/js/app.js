@@ -191,14 +191,21 @@ $(document).ready(function () {
     content of the categories and return how
      */
     $('#search_content').on('keyup', function (e) {
-        var searchString = $(this).val();
+        var searchString = $(this).val(),
+            searchAll = 0;
 
         if (e.keyCode == 13 && searchString.length >= 1){
+
+            if ( $('#search_all_user_entities').is(':checked') ){
+                searchAll = 1;
+            }
+
             $.ajax({
                 type: "POST",
                 url: "wiki/search",
                 data: {
-                    search_string:  searchString
+                    search_string:  searchString,
+                    search_all_entities:  searchAll
                 },
                 success:function(result) {
                     $('#search_result_listing').html("");
@@ -206,10 +213,91 @@ $(document).ready(function () {
                         //Load content into main body
                         $('#category_content_body').html(result.html);
                     }
-
+                    $('#search_all_user_entities').prop('checked', false);
                 }
             });
         }
+
+    });
+
+    //------------------------------
+    // Links management
+    //------------------------------
+
+    /*
+    Populate edit link modal text inputs and set action url
+     */
+    $('#modalEditLink').on('show.bs.modal', function(event) {
+        var targetEvent = $(event.relatedTarget),
+            linkId = targetEvent.data('link-id'),
+            linkTitle = targetEvent.data('link-title'),
+            linkUrl = targetEvent.data('link-url');
+
+        $('#edit-link-form').attr('action', '/link/' + linkId);
+
+        $('#edit_title').val(linkTitle);
+        $('#edit_url').val(linkUrl);
+    });
+
+    /*
+    Delete Link
+    */
+    $('.delete-link').on('click', function () {
+        var trParent = $(this).closest('tr');
+        linkId = $(this).closest('tr').attr('data-link-id');
+
+        if ( confirm("Delete this link?") ){
+            $.ajax({
+                type: 'DELETE',
+                url: '/link/' + linkId,
+                dataType: "json",
+                success:function(result) {
+                    if (result.success) {
+                        trParent.hide();
+                    }
+                }
+            });
+        }
+    });
+
+    //------------------------------
+    // Entities management
+    //------------------------------
+
+    /*
+    Populate entities edit modal entity title and set action url
+     */
+    $('#modalEditEntity').on('show.bs.modal', function(event) {
+        var targetEvent = $(event.relatedTarget),
+            entityId = targetEvent.data('entity-id'),
+            entityTitle = targetEvent.data('entity-title');
+
+        $('#edit-entity-form').attr('action', '/entity/' + entityId);
+
+        $('#edit_title').val(entityTitle);
+    });
+
+    /*
+    Delete Link
+    */
+    $('.delete-entity').on('click', function () {
+        var trParent = $(this).closest('tr');
+        entityId = $(this).closest('tr').attr('data-entity-id');
+
+        alert('Not allowing entity deletion at this time');
+
+        // if ( confirm("Delete this link?") ){
+        //     $.ajax({
+        //         type: 'DELETE',
+        //         url: '/entity/' + entityId,
+        //         dataType: "json",
+        //         success:function(result) {
+        //             if (result.success) {
+        //                 trParent.hide();
+        //             }
+        //         }
+        //     });
+        // }
 
     });
 

@@ -1,7 +1,18 @@
 @section('search')
-    <div class="card-search">
-        <input type="search" id="search_content" class="form-control input-sm" name="search_value" placeholder="Search For Content...">
-        {{--<div id="search_result_listing"></div>--}}
+    <div class="form-inline my-2 my-lg-0">
+        <input id="search_content"
+               class="form-control mr-sm-2"
+               type="search"
+               placeholder="Search For Content..."
+               aria-label="Search"/>
+
+{{--                <input--}}
+{{--                    type="checkbox"--}}
+{{--                    id="search_all_user_entities"--}}
+{{--                />--}}
     </div>
 @endsection
+
+
+
 

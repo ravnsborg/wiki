@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Article;
 use App\Models\Link;
+use App\Models\User;
+use App\Models\Entity;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Response;
 
 class HomeController extends Controller
 {
+
     /**
      * Create a new controller instance.
      *
@@ -26,17 +29,20 @@ class HomeController extends Controller
      * Display main page with list of
      * categories and defaulted wiki content
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|Response|\Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $this->middleware('auth');
         $content = new Article;
+
+
 
         return view('index', [
             'categoryList' => (new Category)->getList(),
-            'content' => $content->getByCategoryId(1),
+            'content' => [],
             'links' => Link::all()->sortBy('title'),
+            'usersEntitiesList' => (new Entity)->getUsersEntities(),
+            'entitySelected' => (new Entity)->getSelectedEntityName(),
             'keywords' => $content->getKeywords(),
         ]);
     }
@@ -50,9 +56,8 @@ class HomeController extends Controller
     {
         if ($request->has('category_id')){
             $content = (new Article)->getByCategoryId($request->category_id);
-            Log::info(var_export($content, true));
         }elseif ($request->has('search_string')){
-            $content = (new Article)->getBySearchString($request->search_string);
+            $content = (new Article)->getBySearchString($request->search_string, $request->search_all_entities);
         }else{
             $content = null;
         }
@@ -68,4 +73,18 @@ class HomeController extends Controller
 
         return response()->json(['html'=>$view, 'categoryList'=>$categoryUniqueListing]);
     }
+
+
+    /*
+     * Assign a preferred entity id to the current user
+     * and redirect to homepage to load these categories
+     */
+    public function assignEntitySelection($entityId)
+    {
+        (new User)->assignPreferredEntityId($entityId);
+
+        return redirect('/');
+    }
+
+
 }

@@ -34,7 +34,7 @@
                 </div>
                 <div class="form-group">
                     <label for="content_text">Content</label>
-                    <textarea id="edit_category_content_text"  name="content_text" type="content_text" rows="15" cols="100"></textarea>
+                    <textarea id="edit_category_content_text"  name="content_text" type="content_text" rows="10" cols="100"></textarea>
                 </div>
             </div>
 

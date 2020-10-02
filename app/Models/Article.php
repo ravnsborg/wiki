@@ -4,17 +4,27 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class Article extends Model
 {
     protected $table = 'articles';
+    protected $userId = null;
+    protected $entityId = null;
 
     protected $fillable = ['categories_id', 'title', 'body', 'url', 'sort_order'];
 
     private $keywords = [
         '??--' => '-------------------------------------',
     ];
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->userId = Auth::user()->id;
+        $this->entityId = Auth::user()->preferred_entities_id;
+    }
 
     public function create($categoryId, $title, $body, $referenceUrl = null)
     {
@@ -77,10 +87,10 @@ class Article extends Model
      * @param $searchString
      * @return mixed
      */
-    public function getBySearchString($searchString)
+    public function getBySearchString($searchString, $searchAllEntities = false)
     {
 
-        return $this->select(
+        $query = $this->select(
             'articles.id',
             'articles.title',
             'articles.categories_id',
@@ -88,11 +98,23 @@ class Article extends Model
             'articles.url',
             'articles.updated_at',
             'categories.title AS wiki_category_title'
-        )
-            ->join('categories', 'categories.id', '=', 'articles.categories_id')
-            ->where('articles.body', 'LIKE', "%{$searchString}%")
-            ->orWhere('articles.title', 'LIKE', "%{$searchString}%")
+            )
+            ->join('categories', 'categories.id', 'articles.categories_id');
+
+            if (!$searchAllEntities){
+                $query = $query
+                    ->join('entities', 'entities.id', 'categories.entities_id')
+                    ->where('categories.entities_id',  $this->entityId)
+                    ->where('entities.users_id', $this->userId);
+            }
+
+            $query = $query->where(function($query) use ($searchString) {
+                $query->where('articles.body', 'LIKE', "%{$searchString}%")
+                      ->orWhere('articles.title', 'LIKE', "%{$searchString}%");
+            })
             ->get();
+
+            return $query;
     }
 
 

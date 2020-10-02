@@ -63,9 +63,9 @@ body {
 }
 
 
-#main_body{
-    min-width:100px;
-}
+/*#main_body{*/
+/*    min-width:100px;*/
+/*}*/
 /* content column */
 .category_content_body {
     float: left;
@@ -78,7 +78,7 @@ body {
 .card-left, .card-main {
     padding: 20px;
     margin-top: 10px;
-    border: 1px solid #177c7e;
+    border: 1px solid #18A2B8;
 }
 
 #search_content{
@@ -187,7 +187,11 @@ body {
 
 .category_listing_item:hover{
     font-size: 1.3em;
-    border-top: 1px solid #177c7e;
-    border-bottom: 1px solid #177c7e;
+    border-top: 1px solid #18A2B8;
+    border-bottom: 1px solid #18A2B8;
 }
 
+.links-table, .entities-table {
+    margin: auto;
+    width: 70%;
+}
