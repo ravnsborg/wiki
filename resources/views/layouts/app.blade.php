@@ -58,21 +58,6 @@
                         <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                     </li>
 
-                    <li class="nav-item active">
-                        <div
-                            class="nav-link"
-                            data-toggle="modal"
-                            data-target="#contentModalContent"
-                            data-target="#contentModal"
-                            data-operation="add_content"
-                            class="topnav_add_content"
-                            data-backdrop="static"
-                            data-keyboard="false"
-                        >
-                            Add Content
-                        </div>
-                    </li>
-
 {{-- LINKS --}}
                 @if(isset($links) && $links)
                         <li class="nav-item dropdown">
@@ -97,6 +82,21 @@
                         </li>
                     @endif
 
+
+                    <li class="nav-item active">
+                        <div
+                            class="nav-link"
+                            data-toggle="modal"
+                            data-target="#contentModalContent"
+                            data-target="#contentModal"
+                            data-operation="add_content"
+                            class="topnav_add_content"
+                            data-backdrop="static"
+                            data-keyboard="false"
+                        >
+                            Add New Content
+                        </div>
+                    </li>
                 </ul>
             @endauth
 
