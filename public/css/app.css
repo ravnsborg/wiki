@@ -74,6 +74,10 @@ body {
     overflow: scroll;
 }
 
+#category_content_body {
+    margin-bottom: 50px;
+}
+
 /* Add a card effect for articles */
 .card-left, .card-main {
     padding: 20px;
