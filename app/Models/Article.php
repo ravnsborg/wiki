@@ -16,7 +16,7 @@ class Article extends Model
     protected $fillable = ['categories_id', 'title', 'body', 'url', 'sort_order'];
 
     private $keywords = [
-        '??--' => '-------------------------------------',
+        '/-' => '-------------------------------------',
     ];
 
     public function __construct(array $attributes = [])
