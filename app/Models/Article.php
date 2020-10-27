@@ -15,9 +15,11 @@ class Article extends Model
 
     protected $fillable = ['categories_id', 'title', 'body', 'url', 'sort_order'];
 
+
     private $keywords = [
-        '/-' => '-------------------------------------',
+        '/--' => '---------------------------------------------------------------------------------------------------------------',
     ];
+
 
     public function __construct(array $attributes = [])
     {
@@ -137,7 +139,12 @@ class Article extends Model
      */
     public function getKeywords()
     {
-        return $this->keywords;
+	$kewords = [];
+
+	foreach ($this->keywords as $key => $value){
+		$keywords[$key] = substr($value,0,28);
+	}
+        return $keywords;
     }
 
     /**
