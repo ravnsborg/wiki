@@ -11,7 +11,7 @@ $(document).ready(function () {
 
 
     //Set cursor to searchbox by default
-    $('#search_content').focus();
+    refocusSearchBox(true);
 
 
     /*
@@ -165,6 +165,8 @@ $(document).ready(function () {
                 load_content( categoryId, $('#search_content').val() );
             }
         });
+	
+	refocusSearchBox();
 
     });
 
@@ -173,7 +175,7 @@ $(document).ready(function () {
     Call function to load content for this entire category
      */
     $('.category_listing_item').on('click', function () {
-        $('#search_content').val('').focus();
+        refocusSearchBox(true);
         var categoryId = $(this).data('category_id');
 
         load_content( categoryId, null);
@@ -325,4 +327,11 @@ function load_content(category_id, search_string){
     });
 }
 
+function refocusSearchBox(clearContents){
+    if (clearContents){
+       $('#search_content').val('');
+    }
+
+    $('#search_content').focus();
+}
 
