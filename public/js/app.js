@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     /**
      * Allows ajax calls to process.
      */
@@ -162,7 +161,7 @@ $(document).ready(function () {
             },
             complete:function(){
                 $('#contentModalContent').modal('hide');
-                load_content( categoryId, $('#search_content').val() );
+                load_category( categoryId, $('#search_content').val() );
             }
         });
 	
@@ -174,11 +173,11 @@ $(document).ready(function () {
     /*
     Call function to load content for this entire category
      */
-    $('.category_listing_item').on('click', function () {
+    $('.category_item').on('click', function () {
         refocusSearchBox(true);
         var categoryId = $(this).data('category_id');
 
-        load_content( categoryId, null);
+        load_category( categoryId, null);
     //kmr stopped here. need to pass cat id to add new content to this cat
         $('#category-id').val(categoryId);
     });
@@ -303,6 +302,46 @@ $(document).ready(function () {
 
     });
 
+    //------------------------------
+    // Favorite article management
+    //------------------------------
+
+    /*
+    Toggle article as favorite or remove it as favorite
+     */
+    $(document).on('click', '.favorite_article', function() {
+        var $element = $(this),
+            articleId = $(this).attr('id'),
+            selectedClassName = null;
+
+        $.ajax({
+            type: 'PUT',
+            url: 'wiki/article/' + articleId + '/favorite/toggle',
+            dataType: "json",
+            success:function(result) {
+                if (result.success) {
+                    if (result.newValue) {
+                        selectedClassName = 'fas';
+                    } else {
+                        selectedClassName = 'far';
+                    }
+                    $element.addClass(selectedClassName);
+                }
+                console.log(result.html);
+                $('#kevin').html(result.html);
+            }
+        });
+    });
+
+
+    /*
+    Displays the favorite article when user
+    clicks on it from favorites list
+     */
+    $(document).on('click', '.article_item', function() {
+        var articleId = $(this).attr('id');
+        load_article(articleId);
+    });
 
 });
 
@@ -311,7 +350,7 @@ $(document).ready(function () {
 /*
  Load category content via ajax when a category is clicked on
  */
-function load_content(category_id, search_string){
+function load_category(category_id, search_string){
     $.ajax({
         type: "POST",
         url: "wiki/search",
@@ -319,6 +358,20 @@ function load_content(category_id, search_string){
             category_id:  category_id,
             search_string:  search_string
         },
+        success:function(result) {
+            if (result.html){
+                $('#category_content_body').html(result.html);
+            }
+        }
+    });
+}
+
+function load_article(article_id){
+    refocusSearchBox(true);
+
+    $.ajax({
+        type: "GET",
+        url: "wiki/article/" + article_id,
         success:function(result) {
             if (result.html){
                 $('#category_content_body').html(result.html);

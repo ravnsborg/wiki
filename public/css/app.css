@@ -146,7 +146,7 @@ body {
     border:#00CC00 dotted 1px;
 }
 
-.category_listing_title {
+.listing_title {
     font-size: 1.4em;
 }
 
@@ -155,9 +155,14 @@ body {
 }
 
 .card-main .edit_content, .add-category{
-    /*margin-top: -15px;*/
     float: right;
-    /*max-height: 2px;*/
+    display: inline;
+}
+
+.card-main .favorite_content{
+    float: right;
+    margin-left: 20px;
+    display: inline;
 }
 
 .card-main .content-title {
@@ -189,7 +194,7 @@ body {
     padding: 10px;
 }
 
-.category_listing_item:hover{
+.listing_item:hover{
     font-size: 1.3em;
     border-top: 1px solid #18A2B8;
     border-bottom: 1px solid #18A2B8;

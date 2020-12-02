@@ -10,10 +10,10 @@
             <i class="fa fa-plus fa-lg add-category"></I>
         </div>
 
-        <span class="category_listing_title">Category Listing</span>
-
+        <span class="listing_title">Category Listing</span>
+        <hr/>
         @foreach($categoryList as $cat)
-            <li class="category_listing_item" data-category_id="{{$cat->id}}">{{ $cat->title }}</li>
+            <li class="listing_item category_item" data-category_id="{{$cat->id}}">{{ $cat->title }}</li>
         @endforeach
     </div>
 
@@ -34,5 +34,20 @@
             </table>
         @endif
     </div>
+
+    <div class="card-left">
+        @if ($favorites)
+            <span class="listing_title">Favorites</span>
+            <hr/>
+                @foreach($favorites as $fav)
+                    <li
+                        class="listing_item article_item"
+                        id="{{ $fav->id }}">
+                            {{ $fav->title }} ( {{$fav->categories_title}} )
+                    </li>
+                @endforeach
+        @endif
+    </div>
+
 
 @endsection

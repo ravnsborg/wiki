@@ -35,8 +35,6 @@ class HomeController extends Controller
     {
         $content = new Article;
 
-
-
         return view('index', [
             'categoryList' => (new Category)->getList(),
             'content' => [],
@@ -44,6 +42,7 @@ class HomeController extends Controller
             'usersEntitiesList' => (new Entity)->getUsersEntities(),
             'entitySelected' => (new Entity)->getSelectedEntityName(),
             'keywords' => $content->getKeywords(),
+            'favorites' => $content->getFavorites(),
         ]);
     }
 
@@ -54,8 +53,10 @@ class HomeController extends Controller
      */
     public function search(Request $request)
     {
-        if ($request->has('category_id')){
-            $content = (new Article)->getByCategoryId($request->category_id);
+        if ($request->has('category_id')) {
+            $content = (new Article)->getByEntityTypesId($request->category_id, 'categories');
+        }elseif ($request->has('article_id')) {
+            $content = (new Article)->getByEntityTypesId($request->article_id, 'articles');
         }elseif ($request->has('search_string')){
             $content = (new Article)->getBySearchString($request->search_string, $request->search_all_entities);
         }else{
@@ -69,7 +70,6 @@ class HomeController extends Controller
         }
 
         $view = view('articles')->with('content', $content->sortBy('title'))->renderSections()['content'];
-
 
         return response()->json(['html'=>$view, 'categoryList'=>$categoryUniqueListing]);
     }

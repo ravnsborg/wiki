@@ -5,6 +5,16 @@
             @foreach($content as $item)
                 <div class="card-main" id="item-{{ $item->id }}">
 
+{{--                    <div id="{{ $item->id }}" class="favorite_content">--}}
+                    <div class="favorite_content">
+                        @if ($item->is_favorite)
+                            <i class="fas fa-star favorite_article" id="{{ $item->id }}"></i>
+                        @else
+                            <i class="far fa-star favorite_article" id="{{ $item->id }}"></i>
+                        @endif
+                    </div>
+                    <br/><br/>
+
                     <div
                         data-toggle="modal"
                         data-target="#contentModalContent"
@@ -18,7 +28,6 @@
                         <i class="fa fa-edit fa-lg edit_content" data-operation="edit_content"></i>
                         <div class="content-title" >{!! $item->title !!}</div>
                     </div>
-
                     <small class="float-right"><strong>{{ $item->wiki_category_title }}</strong>    {{ $item->updated_at }}</small>
 
                     <hr>

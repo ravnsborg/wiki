@@ -48,9 +48,12 @@ Route::get('/wiki/category', [ArticlesController::class, 'create']);
 //Store new category
 Route::post('/wiki/category', [CategoriesController::class, 'store']);
 
-//Add / Edit content
+//View / Add / Edit articles
+Route::get('wiki/article/{id}', [ArticlesController::class, 'index']);
 Route::post('/wiki/content', [ArticlesController::class, 'store']);
 Route::put('/wiki/content/{id}', [ArticlesController::class, 'update']);
+//Route::put('/wiki/content/{id}/favorite', [ArticlesController::class, 'toggleFavorite']);
+Route::put('/wiki/article/{id}/favorite/toggle', [ArticlesController::class, 'toggleFavorite']);
 
 //Remove content
 Route::delete('/wiki/content/{id}', [ArticlesController::class, 'destroy']);

@@ -55,18 +55,43 @@ class Article extends Model
 
     }
 
+    /*
+     * Updates article's `is_favorite` value with
+     * the opposite boolean value currently set
+     */
+    public function toggleFavorite($contentId)
+    {
+        $article = $this->find($contentId);
+
+        $this->where('id', $contentId)
+            ->update([
+                'is_favorite' => !$article->is_favorite,
+                'updated_at' => Carbon::now()
+        ]);
+
+        return !$article->is_favorite;
+    }
+
     public function getById($contentId)
     {
         return $this->find($contentId);
     }
 
     /**
-     * Get all content for a specific category
+     * Get all content for a
+     * specific category or article
+     * dependant on which 'entity' type
+     * was passed in.
+     *
      * @param $categoryId
      * @return mixed
      */
-    public function getByCategoryId($categoryId)
+//    public function getByCategoryId($categoryId)
+    public function getByEntityTypesId($id, $tableName)
     {
+        if (!in_array($tableName, ['articles', 'categories']) ){
+            return [];
+        }
 
         return $this->select(
             'articles.id',
@@ -74,12 +99,13 @@ class Article extends Model
             'articles.categories_id',
             'articles.body',
             'articles.url',
+            'articles.is_favorite',
             'articles.updated_at',
             'categories.title AS wiki_category_title'
         )
-            ->join('categories', 'categories.id', '=', 'articles.categories_id')
-            ->where('categories_id', $categoryId)
-            ->get();
+        ->join('categories', 'categories.id', '=', 'articles.categories_id')
+        ->where("{$tableName}.id", $id)
+        ->get();
     }
 
     /**
@@ -98,6 +124,7 @@ class Article extends Model
             'articles.categories_id',
             'articles.body',
             'articles.url',
+            'articles.is_favorite',
             'articles.updated_at',
             'categories.title AS wiki_category_title'
             )
@@ -139,12 +166,29 @@ class Article extends Model
      */
     public function getKeywords()
     {
-	$kewords = [];
+        $kewords = [];
 
-	foreach ($this->keywords as $key => $value){
-		$keywords[$key] = substr($value,0,28);
-	}
+        foreach ($this->keywords as $key => $value){
+            $keywords[$key] = substr($value,0,28);
+        }
         return $keywords;
+    }
+
+    /*
+     * Return array of all favorite articles
+     */
+    public function getFavorites()
+    {
+        return $this->select(
+            'articles.id',
+            'articles.title',
+            'articles.is_favorite',
+            'categories.title AS categories_title'
+        )
+        ->join('categories', 'categories.id', '=', 'articles.categories_id')
+        ->where('is_favorite', 1)
+        ->orderBy('categories.title')
+        ->get();
     }
 
     /**
