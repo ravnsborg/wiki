@@ -1,5 +1,5 @@
 @extends('layouts.app')
 @extends('search')
 @extends('categories')
+@extends('favorites')
 @extends('articles')
-

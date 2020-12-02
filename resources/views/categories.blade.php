@@ -34,20 +34,4 @@
             </table>
         @endif
     </div>
-
-    <div class="card-left">
-        @if ($favorites)
-            <span class="listing_title">Favorites</span>
-            <hr/>
-                @foreach($favorites as $fav)
-                    <li
-                        class="listing_item article_item"
-                        id="{{ $fav->id }}">
-                            {{ $fav->title }} ( {{$fav->categories_title}} )
-                    </li>
-                @endforeach
-        @endif
-    </div>
-
-
 @endsection

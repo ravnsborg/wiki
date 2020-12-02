@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -99,28 +98,11 @@ class ArticlesController extends Controller
 
         $newFavoriteSetting = $content->toggleFavorite($contentId);
 
-        $categoryList = (new Category)->getList();
-        $keywords = $content->getKeywords();
-        $favorites = $content->getFavorites();
-
-        $view = view('categories', ['categoryList'=>$categoryList, 'keywords'=>$keywords, 'favorites'=>$favorites])->renderSections()['categories'];
-//        $view = view('favorites', ['favorites'=>$favorites])->renderSections()['favorites'];
-
+        $favorites = $content->getFavorites()->sortBy('title');
+        $view = view('favorites', ['favorites'=>$favorites])->renderSections()['favorites'];
 
         return response()->json(['success'=>true, 'newValue' => $newFavoriteSetting, 'html'=>$view]);
-
-
     }
-//    public function toggleFavorite($contentId)
-//    {
-//        $content = new Article();
-//
-//        $newFavoriteSetting = $content->toggleFavorite($contentId);
-//
-//        return response()->json(['success'=>true, 'newValue' => $newFavoriteSetting]);
-//
-//
-//    }
 
 
     /**

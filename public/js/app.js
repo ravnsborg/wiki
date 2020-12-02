@@ -327,8 +327,10 @@ $(document).ready(function () {
                     }
                     $element.addClass(selectedClassName);
                 }
-                console.log(result.html);
-                $('#kevin').html(result.html);
+
+                //Reload the favorites section
+                $('#favorites_listing').html(result.html);
+
             }
         });
     });

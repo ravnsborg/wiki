@@ -167,6 +167,9 @@
 {{-- CATEGORIES LISTING --}}
     <div class="left_column">
         @yield('categories')
+        <div id="favorites_listing">
+            @yield('favorites')
+        </div>
     </div>
 
 
