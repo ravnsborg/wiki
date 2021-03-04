@@ -97,3 +97,8 @@ Route::delete('/entity/{id}', [EntitiesController::class, 'destroy']);
 //Sandbox
 //Route::get('sb', 'SandboxController@index');
 //Route::get('sb/db/{content}', 'SandboxController@db');
+
+//------------------------------------------
+// Backup DB
+//------------------------------------------
+Route::get('/db/dump', [HomeController::class, 'db_dump']);

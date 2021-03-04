@@ -60,7 +60,7 @@
 
 {{-- LINKS --}}
                 @if(isset($links) && $links)
-                        <li class="nav-item dropdown">
+                        <li class="nav-item  active dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Links
                             </a>
@@ -96,6 +96,9 @@
                         >
                             Add New Content
                         </div>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/db/dump">DB Backup</a>
                     </li>
                 </ul>
             @endauth

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Article;
@@ -11,6 +12,8 @@ use App\Models\Entity;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Response;
+use phpDocumentor\Reflection\File;
+
 
 class HomeController extends Controller
 {
@@ -83,6 +86,27 @@ class HomeController extends Controller
     {
         (new User)->assignPreferredEntityId($entityId);
 
+        return redirect('/');
+    }
+
+
+    /*
+     * Backup db to storage folder
+     */
+    public function db_dump()
+    {
+        $filePath = storage_path() . '/DB/';
+        $fileName = env('DB_DATABASE') . '_' . Carbon::now()->format('Y-m-d_H') . '.sql';
+
+        if (!file_exists($filePath)) {
+            mkdir($filePath);
+        }
+
+        $fullPath = $filePath . $fileName;
+
+        $result = exec('/Applications/MAMP/Library/bin/mysqldump --user='.env('DB_USERNAME').' --password='.env('DB_PASSWORD').' --host='.env('DB_HOST').' ' . env('DB_DATABASE').'  > ' . $fullPath);
+
+        flash("Backup saved to {$fullPath}")->info();
         return redirect('/');
     }
 

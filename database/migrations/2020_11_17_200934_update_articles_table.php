@@ -14,7 +14,7 @@ class UpdateArticlesTable extends Migration
     public function up()
     {
         Schema::table('articles', function (Blueprint $table) {
-            $table->boolean('is_favorite')->after('url');
+            $table->boolean('is_favorite')->after('url')->default(0);
         });
     }
 
