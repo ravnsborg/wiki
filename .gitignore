@@ -19,4 +19,5 @@ yarn-error.log
 composer.lock
 ubuntu-xenial-16.04-cloudimg-console.log
 homebase_schema.sql
+/storage/DB
 ~
