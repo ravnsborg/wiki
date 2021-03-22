@@ -104,7 +104,7 @@ class HomeController extends Controller
 
         $fullPath = $filePath . $fileName;
 
-        $result = exec('/Applications/MAMP/Library/bin/mysqldump --user='.env('DB_USERNAME').' --password='.env('DB_PASSWORD').' --host='.env('DB_HOST').' ' . env('DB_DATABASE').'  > ' . $fullPath);
+        $result = exec('/Applications/MAMP/Library/bin/mysqldump --user='.env('DB_USERNAME').' --password='.env('DB_PASSWORD').' --host='.env('DB_HOST') . ' --port='.env('DB_PORT') . ' ' . env('DB_DATABASE').'  > ' . $fullPath);
 
         flash("Backup saved to {$fullPath}")->info();
         return redirect('/');
